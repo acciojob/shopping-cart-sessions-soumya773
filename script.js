@@ -50,11 +50,14 @@ function renderCart() {
 
 // Add product to cart
 function addToCart(product) {
-  const cart = loadCart();
+  let cart = loadCart();
+  console.log('Before adding:', cart);
   cart.push(product);
   saveCart(cart);
+  console.log('After adding:', cart);
   renderCart();
 }
+
 
 // Clear cart
 function clearCart() {
