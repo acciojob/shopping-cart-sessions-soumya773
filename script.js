@@ -50,13 +50,12 @@ function renderCart() {
 
 // Add product to cart
 function addToCart(product) {
-  let cart = loadCart();
-  console.log('Before adding:', cart);
+  let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
   cart.push(product);
-  saveCart(cart);
-  console.log('After adding:', cart);
+  sessionStorage.setItem('cart', JSON.stringify(cart));
   renderCart();
 }
+
 
 
 // Clear cart
