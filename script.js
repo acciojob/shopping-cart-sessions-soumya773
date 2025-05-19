@@ -10,11 +10,14 @@ const productList = document.getElementById("product-list");
 const cartList = document.getElementById("cart-list");
 const clearCartBtn = document.getElementById("clear-cart-btn");
 
-// Render products
+// Load cart from sessionStorage or initialize empty
+let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+
+// Display products
 function renderProducts() {
   products.forEach(product => {
     const li = document.createElement("li");
-    li.textContent = `${product.name} - $${product.price} `;
+    li.textContent = `${product.name} - $${product.price}`;
 
     const addButton = document.createElement("button");
     addButton.textContent = "Add to Cart";
@@ -25,22 +28,9 @@ function renderProducts() {
   });
 }
 
-// Load cart from sessionStorage
-function loadCart() {
-  const cartData = sessionStorage.getItem("cart");
-  return cartData ? JSON.parse(cartData) : [];
-}
-
-// Save cart to sessionStorage
-function saveCart(cart) {
-  sessionStorage.setItem("cart", JSON.stringify(cart));
-}
-
-// Render cart items
+// Display cart items
 function renderCart() {
-  cartList.innerHTML = "";
-  const cart = loadCart();
-
+  cartList.innerHTML = ""; // Clear current list
   cart.forEach(item => {
     const li = document.createElement("li");
     li.textContent = `${item.name} - $${item.price}`;
@@ -48,25 +38,23 @@ function renderCart() {
   });
 }
 
-// Add product to cart
+// Add product to cart and save to sessionStorage
 function addToCart(product) {
-  let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
   cart.push(product);
-  sessionStorage.setItem('cart', JSON.stringify(cart));
+  sessionStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
 }
 
-
-
-// Clear cart
+// Clear cart from display and sessionStorage
 function clearCart() {
+  cart = [];
   sessionStorage.removeItem("cart");
   renderCart();
 }
 
-// Attach clear cart button event
+// Event listener for clear cart button
 clearCartBtn.addEventListener("click", clearCart);
 
 // Initial load
 renderProducts();
-renderCart();
+renderCart(); // to restore cart if sessionStorage has data
